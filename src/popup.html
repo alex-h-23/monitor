@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Monitor</title>
+    <style>
+        html,
+        body {
+            min-width: 650px;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 10px 0 6px 0;
+            font-size: 1.1em;
+            text-align: center;
+        }
+
+        #loadingMessage {
+            text-align: center;
+            margin-top: 1em;
+            color: #545859;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #171C8F;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #tabsList,
+        #defaultTabsSection,
+        #rotationSection {
+            display: block;
+            margin: 10px;
+        }
+
+        .tab-entry {
+            display: grid;
+            grid-template-columns: 1fr 160px 60px 60px auto;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: #fff;
+            border: 1px solid #545859;
+            border-radius: 6px;
+        }
+
+        .tab-title {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-weight: bold;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .range-slider {
+            width: 100px;
+            margin-right: 8px;
+        }
+
+        .slider-value {
+            width: 24px;
+            text-align: right;
+            margin-right: 4px;
+        }
+
+        .tab-button {
+            border: none;
+            padding: 0.4em 0.6em;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #171C8F;
+            color: #fff;
+            font-size: 0.85em;
+        }
+
+        .tab-button:hover {
+            background-color: #1B365D;
+        }
+
+        .remove-button {
+            background-color: #C8102E;
+        }
+
+        .remove-button:hover {
+            background-color: #C8102E;
+        }
+
+        .countdown {
+            text-align: right;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .default-tabs-form {
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .default-tabs-form input[type="text"] {
+            width: 250px;
+            padding: 4px;
+        }
+
+        .default-tabs-form .range-slider {
+            width: 120px;
+        }
+
+        .default-tabs-entry {
+            display: grid;
+            grid-template-columns: 1fr 80px 60px auto;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .dt-url {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .rotation-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        #rotationSlider {
+            width: 120px;
+        }
+
+        #rotationToggle {
+            min-width: 100px;
+        }
+
+        h1#title {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 1.1em;
+            color: white;
+        }
+
+        #header {
+            width: 100%;
+            padding:10px;
+            background: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header">
+        <h1 id="title">
+            Monitor
+        </h1>
+    </div>
+
+    <div id="loadingMessage">
+        Initializing...
+        <span class="spinner"></span>
+    </div>
+
+    <h2>Open Tabs Refresh Control</h2>
+    <!-- Current open tabs -->
+    <div id="tabsList" style="display:none;"></div>
+    <p style="text-align:center; font-size:0.85em; color:#666;">
+        This will automatically refresh tabs at the chosen interval.
+    </p>
+
+    <hr />
+    <!-- Rotation UI -->
+    <h2>Tab Rotation Control</h2>
+    <div id="rotationSection" style="display:none;">
+        <div class="rotation-controls">
+            <label>Rotate every <span id="rotationValue">30</span>s</label>
+            <input type="range" id="rotationSlider" class="range-slider" min="5" max="120" value="30" />
+            <button id="rotationToggle" class="tab-button">Enable</button>
+        </div>
+        <p style="text-align:center; font-size:0.85em; color:#666;">
+            This will cycle through tabs in the current window at the chosen interval.
+        </p>
+    </div>
+
+    <hr />
+    <h2>Default Tabs Control</h2>
+
+    <!-- Form to add a new default tab -->
+    <div class="default-tabs-form">
+        <input type="text" id="defaultTabUrl" placeholder="Enter URL..." />
+        <div>
+            <input type="range" id="defaultTabIntervalSlider" class="range-slider" min="1" max="30" value="5" />
+            <span id="defaultTabIntervalValue">5</span>m
+        </div>
+        <button id="addDefaultTabButton" class="tab-button">Add</button>
+    </div>
+
+    <!-- Existing default tabs (list) -->
+    <div id="defaultTabsSection" style="display:none;"></div>
+
+    <p style="text-align:center; font-size:0.85em; color:#666;">
+        Default tabs will be opened on browser startup and have the chosen refresh interval applied automatically.
+    </p>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>
