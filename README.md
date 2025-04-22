@@ -1,4 +1,4 @@
-# 🖥️ Monitor — A Simple Tab Management Tool for Monitoring & Service Desks
+# Monitor — A Simple Tab Management Tool for Monitoring & Service Desks
 
 **Monitor** is a simple, open-source browser extension built for **rotating and refreshing browser tabs** — without the bloat, spyware, or ads.
 
@@ -37,14 +37,4 @@ Perfect for:
 ### 🔗 Web Store (Coming Soon)
 
 > Will be available on:  
-> [Chrome Web Store](#)  
-> [Edge Add-ons](#)
-
----
-
-### 💻 Manual Installation (for local testing or air-gapped environments)
-
-1. **Download or clone** the repo:
-   ```bash
-   git clone https://github.com/your-org/monitor-extension.git
-   cd monitor-extension
+> [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/monitor/pjpjkjjpgknjfkmijpebiakpadondebn)
