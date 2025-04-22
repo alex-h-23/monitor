@@ -34,7 +34,7 @@ Perfect for:
 
 ## 📥 Installation
 
-### 🔗 Web Store (Coming Soon)
+### 🔗 Web Store
 
 > Will be available on:  
 > [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/monitor/pjpjkjjpgknjfkmijpebiakpadondebn)
